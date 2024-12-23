@@ -1,0 +1,128 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "API для управления авторами",
+    "description": "API для создания, получения и удаления авторов и их книг."
+  },
+  "basePath": "/api",
+  "tags": [
+    {
+      "name": "Author",
+      "description": "Операции с авторами"
+    }
+  ],
+  "paths": {
+    "/authors": {
+      "post": {
+        "tags": ["Author"],
+        "summary": "Создание нового автора",
+        "description": "Создает нового автора на основе переданных данных.",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "author",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Author"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Успешно созданный автор",
+            "schema": {
+              "$ref": "#/definitions/Author"
+            }
+          },
+          "400": {
+            "description": "Ошибка валидации входных данных"
+          }
+        }
+      }
+    },
+    "/authors/{id}": {
+      "get": {
+        "tags": ["Author"],
+        "summary": "Получение книг автора по ID",
+        "description": "Получает все книги, написанные автором с указанным ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Список книг автора",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Book"
+              }
+            }
+          },
+          "404": {
+            "description": "Автор не найден"
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Author"],
+        "summary": "Удаление автора по ID",
+        "description": "Удаляет автора с указанным ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Автор успешно удалён"
+          },
+          "404": {
+            "description": "Автор не найден"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Author": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "books": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Book"
+          }
+        }
+      }
+    },
+    "Book": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "author_id": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}
